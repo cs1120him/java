@@ -1,7 +1,5 @@
 package design_patterns.builder;
 
-import java.lang.module.ModuleDescriptor.Builder;
-
 public class User {
     private final String firstName;
     private final String lastName;
