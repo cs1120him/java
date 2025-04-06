@@ -11,6 +11,7 @@ public class User {
     private final Integer age;
     private final String gender;
 
+    // This can access private members of nested class.
     private User(Builder builder) {
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;
