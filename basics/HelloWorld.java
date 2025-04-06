@@ -1,4 +1,6 @@
 import design_patterns.builder.User;
+import design_patterns.builder.recursive_generics.Employee;
+import design_patterns.builder.recursive_generics.Person;
 
 public class HelloWorld {
     public static void main (String args[]) {
@@ -7,5 +9,9 @@ public class HelloWorld {
         // Testing Builder pattern
         User user = new User.Builder().setFirstName("himanshu").setAge(30).build();
         System.out.println(user.toString());
+
+        // Testing Builder with inheritence pattern
+        Person p = new Person.Builder().setName("himanshu").build();
+        Employee e = new Employee.Builder().setName("pari").setId("123").build();
     }
 }
