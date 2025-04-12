@@ -34,5 +34,38 @@ public class Demo {
         Thread.sleep(10000);
         t1.interrupt();
         t2.interrupt();
+
+        ProcessWithLocks p2 = new ProcessWithLocks();
+
+        Thread t3 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    p2.produce();
+                } catch (InterruptedException e) {
+                    System.out.println("Thread3 interrupted by main thread");
+                    e.printStackTrace();
+                }
+            } 
+        });
+
+        Thread t4 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    p2.consume();
+                } catch (InterruptedException e) {
+                    System.out.println("Thread4 interrupted by main thread");
+                    e.printStackTrace();
+                }
+            } 
+        });
+
+        t3.start();
+        t4.start();
+
+        Thread.sleep(10000);
+        t3.interrupt();
+        t4.interrupt();
     }
 }
