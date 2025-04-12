@@ -21,9 +21,14 @@ public class ProcessWithLocksAndConditions {
 
             Thread.sleep(randomInt);
             l.lock();
+
+            // Tells the current lock acquire count for the current thread running this.
             System.out.println("Lock hold count after acquire in produce: " + ((ReentrantLock) l).getHoldCount());
+            
             int s = queue.size();
             if (s == 5) {
+                // await releases the lock completely, 'N' hold count to 0, so that the other thread can acquire the lock.
+                // However, when this thread again acquires the lock, the prev count is restored.
                 notFull.await(); 
             } else {
                 System.out.println("Adding: " + s);
@@ -41,7 +46,10 @@ public class ProcessWithLocksAndConditions {
 
             Thread.sleep(randomInt + 250);
             l.lock();
+
+            // Tells the current lock acquire count for the current thread running this.
             System.out.println("Lock hold count after acquire in consume: " + ((ReentrantLock) l).getHoldCount());
+            
             int s = queue.size();
             if (s == 0) {
                 notEmpty.await();
