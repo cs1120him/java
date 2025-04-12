@@ -67,5 +67,38 @@ public class Demo {
         Thread.sleep(10000);
         t3.interrupt();
         t4.interrupt();
+
+        ProcessWithLocksAndConditions p3 = new ProcessWithLocksAndConditions();
+
+        Thread t5 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    p3.produce();
+                } catch (InterruptedException e) {
+                    System.out.println("Thread5 interrupted by main thread");
+                    e.printStackTrace();
+                }
+            } 
+        });
+
+        Thread t6 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    p3.consume();
+                } catch (InterruptedException e) {
+                    System.out.println("Thread6 interrupted by main thread");
+                    e.printStackTrace();
+                }
+            } 
+        });
+
+        t5.start();
+        t6.start();
+
+        Thread.sleep(15000);
+        t5.interrupt();
+        t6.interrupt();
     }
 }

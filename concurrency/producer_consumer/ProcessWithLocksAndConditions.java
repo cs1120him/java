@@ -3,11 +3,14 @@ package concurrency.producer_consumer;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class ProcessWithLocks {
+public class ProcessWithLocksAndConditions {
     private static Lock l = new ReentrantLock();
+    private static Condition notFull = l.newCondition();
+    private static Condition notEmpty = l.newCondition();
     private static Queue<Integer> queue = new LinkedList<>();
     
     public void produce() throws InterruptedException {
@@ -18,14 +21,16 @@ public class ProcessWithLocks {
 
             Thread.sleep(randomInt);
             l.lock();
+            System.out.println("Lock hold count after acquire in produce: " + ((ReentrantLock) l).getHoldCount());
             int s = queue.size();
             if (s == 5) {
-                l.unlock();
+                notFull.await(); 
             } else {
                 System.out.println("Adding: " + s);
                 queue.add(s);
-                l.unlock();
+                notEmpty.signal();
             }
+            l.unlock();
         }
     }
 
@@ -36,13 +41,15 @@ public class ProcessWithLocks {
 
             Thread.sleep(randomInt + 250);
             l.lock();
+            System.out.println("Lock hold count after acquire in consume: " + ((ReentrantLock) l).getHoldCount());
             int s = queue.size();
             if (s == 0) {
-                l.unlock();
+                notEmpty.await();
             } else {
                 System.out.println("Removing: " + queue.remove());
-                l.unlock();
+                notFull.signal();
             }
+            l.unlock();
         }
     }
 }
