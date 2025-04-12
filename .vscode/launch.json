@@ -6,13 +6,6 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Demo",
-            "request": "launch",
-            "mainClass": "concurrency.begin.Demo",
-            "projectName": "java_7501230a"
-        },
-        {
-            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"
